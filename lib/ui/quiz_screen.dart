@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_quiz_app/data/quiz_manager.dart';
+import 'package:flutter_quiz_app/data/quiz_model.dart';
 
 class QuizScreen extends StatefulWidget {
    QuizScreen({super.key});
@@ -8,18 +10,41 @@ class QuizScreen extends StatefulWidget {
 }
 
 class _QuizScreenState extends State<QuizScreen> {
-  final List<Icon> iconList = [];
 
-  final List<String> question = [
-    'جاوا اسکریپت کوچیک شده جاواس برای محیط وب؟',
-    'تو 6 ماه میشه تمام زبان های برنامه نویسی رو یاد گرفت؟',
-    'زبان برنامه نویسی فریم ورک فلاتر دارت هست؟',
-  ];
+  int showQuestion = 0;
+  QuizModel? quiz;
+  bool isFinish = false;
+  int correctAnswerIndex = 0;
 
-  int questionIndex = 0;
+  Widget generateQuizBottom(int index){
+    return ListTile(
+      title: Text(quiz!.answerList![index]),
+      onTap: () {
+        if(quiz!.correctAnswer == index){
+          correctAnswerIndex++;
+        } else{
+          print("wrong");
+        }
+
+        if(showQuestion == QuizManager.getAllQuiz().length - 1){
+          isFinish = true;
+        }
+
+        setState(() {
+          if(showQuestion < QuizManager.getAllQuiz().length - 1){
+            showQuestion++;
+          }
+        });
+
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+
+    quiz = QuizManager.getAllQuiz()[showQuestion];
+
     return  Scaffold(
       body: SafeArea(
         child: Padding(
@@ -30,16 +55,11 @@ class _QuizScreenState extends State<QuizScreen> {
               // txt
                Expanded(
                   flex: 2,
-                  child: Center(child: Text(question[questionIndex],style: const TextStyle(fontSize: 16),))),
+                  child: Center(child: Text(quiz!.questionTitle!,style: const TextStyle(fontSize: 16),))),
 
               ElevatedButton(
                   onPressed: () {
-                    setState(() {
-                      if(questionIndex < 2){
-                        questionIndex++;
-                      }
 
-                    });
                   },
                   style: const ButtonStyle(
                     backgroundColor: MaterialStatePropertyAll(Colors.green),
@@ -49,18 +69,14 @@ class _QuizScreenState extends State<QuizScreen> {
 
               ElevatedButton(
                   onPressed: () {
-                    if(questionIndex < 2){
-                      questionIndex++;
-                    }
+
                   },
                   style: const ButtonStyle(
                     backgroundColor: MaterialStatePropertyAll(Colors.red),
                     minimumSize: MaterialStatePropertyAll(Size(double.infinity,40))
                   ),
                   child: const Text("false")),
-              Row(
-                children: iconList
-              )
+
             ],
           ),
         ),
@@ -68,3 +84,7 @@ class _QuizScreenState extends State<QuizScreen> {
     );
   }
 }
+
+
+
+

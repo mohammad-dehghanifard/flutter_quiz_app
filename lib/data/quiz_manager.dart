@@ -3,7 +3,7 @@ import 'quiz_model.dart';
 class QuizManager{
   QuizManager._();
 
-  List<QuizModel> getAllQuiz(){
+ static List<QuizModel> getAllQuiz(){
     final QuizModel quiz1 = QuizModel(
       questionTitle: "نام سرادار ایرانی که موفق شد برای اولین بار رومی ها را شکست دهد؟",
       answerList: ["سورنا","بابک خرمدین","شاپور اول"],
