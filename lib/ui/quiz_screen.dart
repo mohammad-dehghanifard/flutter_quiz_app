@@ -19,7 +19,8 @@ class _QuizScreenState extends State<QuizScreen> {
 
   Widget generateQuizBottom(int index){
     return ListTile(
-      title: Text(quiz!.answerList![index]),
+      tileColor: Colors.black,
+      title: Center(child: Text(quiz!.answerList![index],style: const TextStyle(color: Colors.white))),
       onTap: () {
 
         if(quiz!.correctAnswer == index){
@@ -50,17 +51,20 @@ class _QuizScreenState extends State<QuizScreen> {
         child: Padding(
           padding: const EdgeInsets.all(12),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // txt
                Expanded(
                   flex: 2,
                   child: Center(child: Text(quiz!.questionTitle!,style: const TextStyle(fontSize: 16),))),
-              ...List.generate(3, (index) => generateQuizBottom(index)),
+              ...List.generate(3, (index) => Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: generateQuizBottom(index),
+              )),
+
               if(isFinish)
               ElevatedButton(
                     onPressed: () {
-                      Navigator.push(context,MaterialPageRoute(builder: (context) => ResultScreen(correctAnswer: correctAnswer)));
+                      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => ResultScreen(correctAnswer: correctAnswer)));
                     },
                     style: const ButtonStyle(
                         backgroundColor: MaterialStatePropertyAll(Colors.green),

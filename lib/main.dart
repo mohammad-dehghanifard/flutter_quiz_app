@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_quiz_app/ui/quiz_screen.dart';
+import 'package:flutter_quiz_app/ui/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,11 +11,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Quiz app',
       home:  Directionality(
         textDirection: TextDirection.rtl,
-          child: QuizScreen()),
+          child: HomeScreen()),
     );
   }
 }
