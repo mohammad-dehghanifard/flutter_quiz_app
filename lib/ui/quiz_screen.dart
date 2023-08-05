@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quiz_app/data/quiz_manager.dart';
 import 'package:flutter_quiz_app/data/quiz_model.dart';
+import 'package:flutter_quiz_app/ui/result_screen.dart';
 
 class QuizScreen extends StatefulWidget {
-   QuizScreen({super.key});
+   const QuizScreen({super.key});
 
   @override
   State<QuizScreen> createState() => _QuizScreenState();
@@ -11,19 +12,18 @@ class QuizScreen extends StatefulWidget {
 
 class _QuizScreenState extends State<QuizScreen> {
 
-  int showQuestion = 0;
-  QuizModel? quiz;
-  bool isFinish = false;
-  int correctAnswerIndex = 0;
+  int showQuestion = 0; // نمایش سوال
+  QuizModel? quiz; // سوال فعلی
+  bool isFinish = false; // مشخص کردن وضعیت بازی
+  int correctAnswer = 0; // تعداد جواب های صحیح
 
   Widget generateQuizBottom(int index){
     return ListTile(
       title: Text(quiz!.answerList![index]),
       onTap: () {
+
         if(quiz!.correctAnswer == index){
-          correctAnswerIndex++;
-        } else{
-          print("wrong");
+          correctAnswer++;
         }
 
         if(showQuestion == QuizManager.getAllQuiz().length - 1){
@@ -56,26 +56,18 @@ class _QuizScreenState extends State<QuizScreen> {
                Expanded(
                   flex: 2,
                   child: Center(child: Text(quiz!.questionTitle!,style: const TextStyle(fontSize: 16),))),
-
+              ...List.generate(3, (index) => generateQuizBottom(index)),
+              if(isFinish)
               ElevatedButton(
-                  onPressed: () {
+                    onPressed: () {
+                      Navigator.push(context,MaterialPageRoute(builder: (context) => ResultScreen(correctAnswer: correctAnswer)));
+                    },
+                    style: const ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(Colors.green),
+                        minimumSize: MaterialStatePropertyAll(Size(double.infinity,40))
+                    ),
+                    child: const Text("مشاهده نتایج")),
 
-                  },
-                  style: const ButtonStyle(
-                    backgroundColor: MaterialStatePropertyAll(Colors.green),
-                    minimumSize: MaterialStatePropertyAll(Size(double.infinity,40))
-                  ),
-                  child: const Text("True")),
-
-              ElevatedButton(
-                  onPressed: () {
-
-                  },
-                  style: const ButtonStyle(
-                    backgroundColor: MaterialStatePropertyAll(Colors.red),
-                    minimumSize: MaterialStatePropertyAll(Size(double.infinity,40))
-                  ),
-                  child: const Text("false")),
 
             ],
           ),
